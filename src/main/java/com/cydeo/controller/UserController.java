@@ -1,10 +1,10 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.UserDTO;
+import com.cydeo.service.RoleService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,8 +25,8 @@ public class UserController {
     public String createUser(Model model) {
 
         model.addAttribute("user", new UserDTO());
-        model.addAttribute("roles", roleService.findAll());
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.findALlRoles());
+        model.addAttribute("users", userService.findAllUsers());
 
         return "/user/create";
     }

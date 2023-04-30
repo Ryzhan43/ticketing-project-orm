@@ -1,7 +1,14 @@
 package com.cydeo.service;
 
+import com.cydeo.dto.RoleDTO;
 import com.cydeo.entity.Role;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
-public interface RoleService extends JpaRepository<Role, Long> {
+import java.util.List;
+
+public interface RoleService {
+
+    List<RoleDTO> findALlRoles();
+    RoleDTO findById(Long id);
+
 }
