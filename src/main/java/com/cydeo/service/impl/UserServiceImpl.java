@@ -64,4 +64,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO findByUsername(String username) {
         return userMapper.convertToDTO(userRepository.findByUserName(username));
     }
+
+    @Override
+    public void delete(String username) {
+        User user = userRepository.findByUserName(username);
+        user.setIsDeleted(true);
+        userRepository.save(user);
+    }
 }

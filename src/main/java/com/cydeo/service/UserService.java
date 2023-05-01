@@ -18,4 +18,5 @@ public interface UserService {
     UserDTO findById(String username);
 
     UserDTO findByUsername(String username);
+    void delete(String username);
 }
