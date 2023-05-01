@@ -26,7 +26,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDTO findById(Long id) {
+    public RoleDTO findById(String id) {
         return null;
     }
 }
