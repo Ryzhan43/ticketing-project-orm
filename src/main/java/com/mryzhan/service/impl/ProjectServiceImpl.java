@@ -54,26 +54,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void deleteById(String projectcode) {
-
-    }
-
-    @Override
     public void complete(ProjectDTO projectDTO) {
         Project project = projectRepository.findByProjectCode(projectDTO.getProjectCode());
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
     }
 
+
     @Override
     public ProjectDTO findByProjectCode(String source) {
         Project project = projectRepository.findByProjectCode(source);
+        System.out.println(project );
         return projectMapper.convertToDTO(project);
     }
 
-
-    @Override
-    public ProjectDTO findById(Long source) {
-        return projectMapper.convertToDTO(projectRepository.findById(source).get());
-    }
 }

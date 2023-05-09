@@ -9,12 +9,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class ProjectDTO {
 
+    private Long id;
     @NotBlank
     private String projectName;
 
@@ -48,6 +50,7 @@ public class ProjectDTO {
         this.endDate = endDate;
         this.projectDetail = projectDetail;
         this.projectStatus = projectStatus;
+        this.id = UUID.randomUUID().getMostSignificantBits();
     }
 
 }

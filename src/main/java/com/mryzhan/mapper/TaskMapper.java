@@ -5,7 +5,9 @@ import com.mryzhan.dto.TaskDTO;
 import com.mryzhan.entity.Role;
 import com.mryzhan.entity.Task;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TaskMapper{
     private final ModelMapper modelMapper;
 

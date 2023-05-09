@@ -21,10 +21,10 @@ public class ProjectDtoConverter implements Converter<String, ProjectDTO> {
     @Override
     public ProjectDTO convert(String source) {
 
+        System.out.println(source);
         if (source == null || source.equals("")) {
             return null;
         }
-
         return projectService.findByProjectCode(source);
 
     }
