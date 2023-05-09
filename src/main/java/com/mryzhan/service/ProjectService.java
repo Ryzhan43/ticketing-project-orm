@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface ProjectService {
     ProjectDTO findById(Long source);
+    ProjectDTO findByProjectCode(String source);
     List<ProjectDTO> listAllProjects();
     void save(ProjectDTO projectDTO);
     void update(ProjectDTO dto);
     void delete(String code);
 
-    ProjectDTO findByProjectCode(String source);
+    void deleteById(String projectcode);
 
-//
-//    ProjectDTO findById(Long source);
+    void complete(ProjectDTO projectCode);
 }

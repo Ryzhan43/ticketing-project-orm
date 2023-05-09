@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByUserName(String username) {
-        return null;
+        User user = userRepository.findByUserName(username);
+        return userMapper.convertToDTO(user);
     }
 
     @Override
@@ -61,6 +62,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAllManagers() {
         return userRepository.findAllByRole_DescriptionIsManager().stream().map(userMapper::convertToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> listAllByRole(String role) {
+
+        List<User> users = userRepository.findAllByRoleDescriptionIgnoreCase(role);
+
+        return users.stream().map(userMapper::convertToDTO).collect(Collectors.toList());
     }
 
     @Override

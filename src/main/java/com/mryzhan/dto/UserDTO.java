@@ -2,6 +2,7 @@ package com.mryzhan.dto;
 
 import com.mryzhan.enums.Gender;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -10,8 +11,10 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Data
 public class UserDTO {
 
+    private Long id;
     @NotBlank
    // @Size(max = 15, min = 2)
     private String firstName;

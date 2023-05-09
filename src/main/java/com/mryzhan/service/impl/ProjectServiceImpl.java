@@ -2,6 +2,7 @@ package com.mryzhan.service.impl;
 
 import com.mryzhan.dto.ProjectDTO;
 import com.mryzhan.entity.Project;
+import com.mryzhan.enums.Status;
 import com.mryzhan.mapper.ProjectMapper;
 import com.mryzhan.repository.ProjectRepository;
 import com.mryzhan.service.ProjectService;
@@ -29,22 +30,45 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void save(ProjectDTO projectDTO) {
-        projectRepository.save(projectMapper.convertToEntity(projectDTO));
+        projectDTO.setProjectStatus(Status.OPEN);
+
+        Project project =projectMapper.convertToEntity(projectDTO);
+        projectRepository.save(project);
     }
 
     @Override
     public void update(ProjectDTO dto) {
+        Project project = projectRepository.findByProjectCode(dto.getProjectCode());
+        Project convertedProject = projectMapper.convertToEntity(dto);
+        convertedProject.setId(project.getId());
+        convertedProject.setProjectStatus(project.getProjectStatus());
 
+        projectRepository.save(convertedProject);
     }
 
     @Override
     public void delete(String code) {
+        Project project =  projectRepository.findByProjectCode(code);
+        project.setIsDeleted(true);
+        projectRepository.save(project);
+    }
+
+    @Override
+    public void deleteById(String projectcode) {
 
     }
 
     @Override
+    public void complete(ProjectDTO projectDTO) {
+        Project project = projectRepository.findByProjectCode(projectDTO.getProjectCode());
+        project.setProjectStatus(Status.COMPLETE);
+        projectRepository.save(project);
+    }
+
+    @Override
     public ProjectDTO findByProjectCode(String source) {
-        return projectMapper.convertToDTO(projectRepository.findByProjectCode(source));
+        Project project = projectRepository.findByProjectCode(source);
+        return projectMapper.convertToDTO(project);
     }
 
 

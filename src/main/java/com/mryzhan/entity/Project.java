@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Where(clause = "is_deleted=false")
 public class Project extends BaseEntity{
     private String projectName;
+//    @Column(unique = true)
     private String projectCode;
     @Column(columnDefinition = "DATE")
     private LocalDate startDate;
