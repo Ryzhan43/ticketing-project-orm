@@ -34,6 +34,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO findById(Long source) {
-        return projectMapper.convertToDTO(projectRepository.findProjectBy(source));
+        return projectMapper.convertToDTO(projectRepository.findById(source).get());
     }
 }

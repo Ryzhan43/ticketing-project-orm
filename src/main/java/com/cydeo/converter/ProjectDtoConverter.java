@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationPropertiesBinding
-public class ProjectDtoConverter implements Converter<Long, ProjectDTO> {
+public class ProjectDtoConverter implements Converter<String, ProjectDTO> {
 
     ProjectService projectService;
 
@@ -19,13 +19,13 @@ public class ProjectDtoConverter implements Converter<Long, ProjectDTO> {
     }
 
     @Override
-    public ProjectDTO convert(Long source) {
+    public ProjectDTO convert(String source) {
 
         if (source == null || source.equals("")) {
             return null;
         }
 
-        return projectService.findById(source);
+        return projectService.findById(Long.parseLong(source));
 
     }
 }
