@@ -72,7 +72,7 @@
                                                     <select th:field="*{assignedManager}" class="custom-select">
                                                         <option th:value="''" th:text="Select"></option>
                                                         <option th:each="manager : ${managers}"
-                                                                th:value="${manager.userName}"
+                                                                th:value="${manager.id}"
                                                                 th:text="${manager.firstName + ' ' + manager.lastName}"></option>
                                                     </select>
                                                     <div class="invalid-feedback"
