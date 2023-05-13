@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Where(clause = "is_deleted=false")
 public class Task extends BaseEntity{
     private String taskSubject;
-    private String taskDetails;
+    private String taskDetail;
     @Enumerated(EnumType.STRING)
     private Status taskStatus;
 

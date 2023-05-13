@@ -32,7 +32,6 @@ public class TaskDTO {
     private LocalDate assignedDate;
 
     public TaskDTO(Long id, ProjectDTO project, UserDTO assignedEmployee, String taskSubject, String taskDetail, Status taskStatus, LocalDate assignedDate) {
-        this.id = UUID.randomUUID().getMostSignificantBits();
         this.project = project;
         this.assignedEmployee = assignedEmployee;
         this.taskSubject = taskSubject;

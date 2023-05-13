@@ -50,7 +50,6 @@ public class ProjectDTO {
         this.endDate = endDate;
         this.projectDetail = projectDetail;
         this.projectStatus = projectStatus;
-        this.id = UUID.randomUUID().getMostSignificantBits();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.mryzhan.controller;
 
 import com.mryzhan.dto.ProjectDTO;
+import com.mryzhan.dto.UserDTO;
 import com.mryzhan.service.ProjectService;
 import com.mryzhan.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/project")
@@ -94,17 +96,15 @@ public class ProjectController {
 
     }
 
-//    @GetMapping("/manager/project-status")
-//    public String getProjectByManager(Model model) {
-//
-//        UserDTO manager = userService.findById("john@cydeo.com");
-//
-//        List<ProjectDTO> projects = projectService.getCountedListOfProjectDTO(manager);
-//
-//        model.addAttribute("projects", projects);
-//
-//        return "/manager/project-status";
-//    }
+    @GetMapping("/manager/project-status")
+    public String getProjectByManager(Model model) {
+
+      List<ProjectDTO> projects = projectService.listAllProjectsDetails();
+
+        model.addAttribute("projects", projects);
+
+        return "/manager/project-status";
+    }
 //
 //    @GetMapping("/manager/complete/{projectCode}")
 //    public String managerCompleteProject(@PathVariable("projectCode") String projectCode) {

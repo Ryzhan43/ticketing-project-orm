@@ -1,11 +1,17 @@
 package com.mryzhan.service.impl;
 
 import com.mryzhan.dto.ProjectDTO;
+import com.mryzhan.dto.UserDTO;
 import com.mryzhan.entity.Project;
+import com.mryzhan.entity.User;
 import com.mryzhan.enums.Status;
 import com.mryzhan.mapper.ProjectMapper;
+import com.mryzhan.mapper.UserMapper;
 import com.mryzhan.repository.ProjectRepository;
+import com.mryzhan.repository.TaskRepository;
 import com.mryzhan.service.ProjectService;
+import com.mryzhan.service.TaskService;
+import com.mryzhan.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +22,17 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectMapper projectMapper;
     private final ProjectRepository projectRepository;
+    private final UserService userService;
+    private final UserMapper userMapper;
+    private final TaskService taskService;
 
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper) {
+    public ProjectServiceImpl(ProjectMapper projectMapper, ProjectRepository projectRepository, UserService userService, UserMapper userMapper, TaskService taskService) {
         this.projectMapper = projectMapper;
         this.projectRepository = projectRepository;
+        this.userService = userService;
+        this.userMapper = userMapper;
+        this.taskService = taskService;
     }
 
     @Override
@@ -58,6 +70,24 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByProjectCode(projectDTO.getProjectCode());
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
+    }
+
+    @Override
+    public List<ProjectDTO> listAllProjectsDetails() {
+
+        UserDTO currentUserDTO = userService.findByUserName("harold@manager.com");
+        User user = userMapper.convertToEntity(currentUserDTO);
+
+        List<Project> list = projectRepository.findAllByAssignedManager(user);
+
+        return list.stream().map(project -> {
+            ProjectDTO obj = projectMapper.convertToDTO(project);
+
+            obj.setUnfinishedTaskCounts(taskService.totalNonCompletedTask(project.getProjectCode()));
+            obj.setCompleteTaskCounts(taskService.totalCompletedTask(project.getProjectCode()));
+            //obj.setCompleteTaskCounts(1);
+            return obj;
+        }).collect(Collectors.toList());
     }
 
 
