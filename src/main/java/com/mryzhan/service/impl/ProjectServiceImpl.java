@@ -1,6 +1,7 @@
 package com.mryzhan.service.impl;
 
 import com.mryzhan.dto.ProjectDTO;
+import com.mryzhan.dto.TaskDTO;
 import com.mryzhan.dto.UserDTO;
 import com.mryzhan.entity.Project;
 import com.mryzhan.entity.User;
@@ -61,6 +62,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void delete(String code) {
         Project project =  projectRepository.findByProjectCode(code);
+        taskService.listAllTasks().stream()
+                .filter(p->p.getProject().equals(findByProjectCode(code)))
+                .map(TaskDTO::getId)
+                .forEach(taskService::delete);
         project.setIsDeleted(true);
         projectRepository.save(project);
     }
@@ -78,7 +83,8 @@ public class ProjectServiceImpl implements ProjectService {
         UserDTO currentUserDTO = userService.findByUserName("harold@manager.com");
         User user = userMapper.convertToEntity(currentUserDTO);
 
-        List<Project> list = projectRepository.findAllByAssignedManager(user);
+        List<Project> list = projectRepository.findAll();
+//        List<Project> list = projectRepository.findAllByAssignedManager(user);
 
         return list.stream().map(project -> {
             ProjectDTO obj = projectMapper.convertToDTO(project);
