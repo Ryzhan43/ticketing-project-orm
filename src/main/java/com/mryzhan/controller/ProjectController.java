@@ -28,7 +28,7 @@ public class ProjectController {
     public String createProject(Model model) {
 
         model.addAttribute("project", new ProjectDTO());
-        model.addAttribute("projects", projectService.listAllProjects());
+        model.addAttribute("projects", projectService.listAllProjectsDetails());
 //        model.addAttribute("managers", userService.findAllManagers());
         model.addAttribute("managers", userService.listAllByRole("manager"));
 
@@ -40,18 +40,15 @@ public class ProjectController {
     @PostMapping("/create")
     public String insertProject(@Valid @ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
 
-        System.out.println(project);
-        System.out.println("==================");
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.listAllProjects());
+            model.addAttribute("projects", projectService.listAllProjectsDetails());
             model.addAttribute("managers", userService.findAllManagers());
 
             return "/project/create";
 
         }
-
-                            projectService.save(project);
+        projectService.save(project);
         return "redirect:/project/create";
 
     }
@@ -72,7 +69,7 @@ public class ProjectController {
     public String editProject(@PathVariable("projectcode") String projectcode, Model model) {
 
         model.addAttribute("project", projectService.findByProjectCode(projectcode));
-        model.addAttribute("projects", projectService.listAllProjects());
+        model.addAttribute("projects", projectService.listAllProjectsDetails());
         model.addAttribute("managers", userService.listAllByRole("manager"));
 
         return "/project/update";
@@ -84,7 +81,7 @@ public class ProjectController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.listAllProjects());
+            model.addAttribute("projects", projectService.listAllProjectsDetails());
             model.addAttribute("managers", userService.listAllByRole("manager"));
 
             return "/project/update";
