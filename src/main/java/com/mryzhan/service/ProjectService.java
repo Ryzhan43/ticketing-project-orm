@@ -2,6 +2,7 @@ package com.mryzhan.service;
 
 import com.mryzhan.dto.ProjectDTO;
 import com.mryzhan.entity.Project;
+import com.mryzhan.entity.User;
 
 import javax.persistence.PreUpdate;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface ProjectService {
     void complete(ProjectDTO projectCode);
 
     List<ProjectDTO> listAllProjectsDetails();
+
+    List<ProjectDTO> readAllByAssignedManager(User assignedManager);
 }

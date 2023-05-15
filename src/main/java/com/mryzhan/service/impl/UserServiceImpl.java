@@ -1,10 +1,16 @@
 package com.mryzhan.service.impl;
 
+import com.mryzhan.dto.ProjectDTO;
+import com.mryzhan.dto.TaskDTO;
 import com.mryzhan.dto.UserDTO;
+import com.mryzhan.entity.Task;
 import com.mryzhan.entity.User;
 import com.mryzhan.mapper.UserMapper;
 import com.mryzhan.repository.UserRepository;
+import com.mryzhan.service.ProjectService;
+import com.mryzhan.service.TaskService;
 import com.mryzhan.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +20,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserMapper userMapper;
-    UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final ProjectService projectService;
+    private final TaskService taskService;
 
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository) {
+    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, @Lazy ProjectService projectService, TaskService taskService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
+        this.projectService = projectService;
+        this.taskService = taskService;
     }
 
     @Override
@@ -80,7 +90,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String username) {
         User user = userRepository.findByUserName(username);
-        user.setIsDeleted(true);
-        userRepository.save(user);
+        if(checkIfUserCanBeDeleted(user)) {
+            user.setIsDeleted(true);
+            user.setUserName(user.getUserName() + "-" + user.getId());
+            userRepository.save(user);
+        }
+    }
+
+    private boolean checkIfUserCanBeDeleted(User user){
+        switch (user.getRole().getDescription())
+        {
+            case "Manager":
+                List<ProjectDTO> projectDTOList = projectService.readAllByAssignedManager(user);
+                return projectDTOList.size() == 0;
+            case "Employee":
+                List<TaskDTO> taskDTOList = taskService.readAllByAssignedEmployee(user);
+                return taskDTOList.size() == 0;
+            default:
+                return true;
+        }
     }
 }

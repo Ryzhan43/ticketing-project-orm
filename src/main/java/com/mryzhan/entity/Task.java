@@ -23,7 +23,6 @@ public class Task extends BaseEntity{
     private LocalDate assignedDate;
     @ManyToOne(fetch = FetchType.LAZY)
     private User assignedEmployee;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 }

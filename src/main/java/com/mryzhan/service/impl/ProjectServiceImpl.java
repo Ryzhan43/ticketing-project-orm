@@ -62,12 +62,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void delete(String code) {
         Project project =  projectRepository.findByProjectCode(code);
-        taskService.listAllTasks().stream()
-                .filter(p->p.getProject().equals(findByProjectCode(code)))
-                .map(TaskDTO::getId)
-                .forEach(taskService::delete);
         project.setIsDeleted(true);
+        project.setProjectCode(project.getProjectCode() + " - " + project.getId());
         projectRepository.save(project);
+        taskService.deleteByProject(projectMapper.convertToDTO(project));
+//        taskService.listAllTasks().stream()
+//                .filter(p->p.getProject().equals(findByProjectCode(code)))
+//                .map(TaskDTO::getId)
+//                .forEach(taskService::delete);
     }
 
     @Override
@@ -75,6 +77,9 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByProjectCode(projectDTO.getProjectCode());
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
+
+
+        taskService.completeByProject(projectMapper.convertToDTO(project));
     }
 
     @Override
@@ -96,11 +101,16 @@ public class ProjectServiceImpl implements ProjectService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProjectDTO> readAllByAssignedManager(User assignedManager) {
+        List<Project> list = projectRepository.findAllByAssignedManager(assignedManager);
+        return list.stream().map(projectMapper::convertToDTO).collect(Collectors.toList());
+    }
+
 
     @Override
     public ProjectDTO findByProjectCode(String source) {
         Project project = projectRepository.findByProjectCode(source);
-        System.out.println(project );
         return projectMapper.convertToDTO(project);
     }
 
