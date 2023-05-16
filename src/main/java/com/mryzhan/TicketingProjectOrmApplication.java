@@ -22,4 +22,6 @@ public class TicketingProjectOrmApplication {
 	public ModelMapper mapper(){
 		return new ModelMapper();
 	}
+
+
 }
