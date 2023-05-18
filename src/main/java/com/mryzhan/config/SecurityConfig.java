@@ -20,23 +20,25 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+//    @Bean
+//    public UserDetailsService userDetailsService(PasswordEncoder encoder){
+//
+//        List<UserDetails> userList = Arrays.asList(new User("mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))),
+//                                                    new User("danny", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER")))
+//        );
+//
+//          return new InMemoryUserDetailsManager(userList);
+//    }
+
+
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
-
-        List<UserDetails> userList = Arrays.asList(new User("mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))),
-                                                    new User("danny", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER")))
-        );
-
-          return new InMemoryUserDetailsManager(userList);
-    }
-
-
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                .antMatchers("user/**").hasRole("ADMIN")
-                .antMatchers("project/**").hasRole("MANAGER")
-                .antMatchers("task/employee/**").hasRole("EMPLOYEE")
+                .antMatchers("user/**").hasAuthority("Admin")
+                .antMatchers("project/**").hasRole("Manager")
+                .antMatchers("task/employee/**").hasRole("Employee")
+                .antMatchers("/task/**").hasAuthority("Manager")
 //                .antMatchers("task/**").hasAnyRole("EMPLOYEE", "ADMIN")
 //                .antMatchers("task/**").hasAuthority("ROLE_EMPLOYEE")
                 .antMatchers(
@@ -44,7 +46,7 @@ public class SecurityConfig {
                      "/login",
                         "/fragments",
                         "/assets/**",
-                        "images/**"
+                        "/images/**"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()
