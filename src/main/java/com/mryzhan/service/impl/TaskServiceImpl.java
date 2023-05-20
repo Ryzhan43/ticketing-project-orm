@@ -10,6 +10,7 @@ import com.mryzhan.mapper.TaskMapper;
 import com.mryzhan.repository.TaskRepository;
 import com.mryzhan.repository.UserRepository;
 import com.mryzhan.service.TaskService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -112,8 +113,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllTasksByStatusIsNot(Status complete) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        User loggedInUser = userRepository.findByUserName("john@employee.com");
+        User loggedInUser = userRepository.findByUserName(username);
         List<Task> list = taskRepository.findAllByTaskStatusIsNotAndAssignedEmployee(complete, loggedInUser);
         return list.stream().map(taskMapper::convertToDTO).collect(Collectors.toList());
     }
@@ -131,7 +133,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllTasksByStatus(Status complete) {
-        User loggedInUser = userRepository.findByUserName("john@employee.com");
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User loggedInUser = userRepository.findByUserName(username);
         List<Task> list = taskRepository.findAllByTaskStatusIsAndAssignedEmployee(complete, loggedInUser);
         return list.stream().map(taskMapper::convertToDTO).collect(Collectors.toList());
     }

@@ -14,6 +14,8 @@ import com.mryzhan.service.ProjectService;
 import com.mryzhan.service.TaskService;
 import com.mryzhan.service.UserService;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -85,8 +87,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> listAllProjectsDetails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        UserDTO currentUserDTO = userService.findByUserName("mike@gmail.com");
+        UserDTO currentUserDTO = userService.findByUserName(username);
         User user = userMapper.convertToEntity(currentUserDTO);
 
         //List<Project> list = projectRepository.findAll();
