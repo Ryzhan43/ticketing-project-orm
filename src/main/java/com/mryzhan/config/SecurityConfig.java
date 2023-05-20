@@ -32,9 +32,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                .antMatchers("user/**").hasAuthority("Admin")
-                .antMatchers("project/**").hasAuthority("Manager")
-                .antMatchers("task/employee/**").hasAuthority("Employee")
+                .antMatchers("/user/**").hasAuthority("Admin")
+                .antMatchers("/project/**").hasAuthority("Manager")
+                .antMatchers("/task/employee/**").hasAuthority("Employee")
                 .antMatchers("/task/**").hasAuthority("Manager")
 //                .antMatchers("task/**").hasAnyRole("EMPLOYEE", "ADMIN")
 //                .antMatchers("task/**").hasAuthority("ROLE_EMPLOYEE")
