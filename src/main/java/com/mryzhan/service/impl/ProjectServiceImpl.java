@@ -13,6 +13,7 @@ import com.mryzhan.repository.TaskRepository;
 import com.mryzhan.service.ProjectService;
 import com.mryzhan.service.TaskService;
 import com.mryzhan.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final TaskService taskService;
 
 
-    public ProjectServiceImpl(ProjectMapper projectMapper, ProjectRepository projectRepository, UserService userService, UserMapper userMapper, TaskService taskService) {
+    public ProjectServiceImpl(ProjectMapper projectMapper, ProjectRepository projectRepository, @Lazy UserService userService, UserMapper userMapper, TaskService taskService) {
         this.projectMapper = projectMapper;
         this.projectRepository = projectRepository;
         this.userService = userService;
@@ -85,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDTO> listAllProjectsDetails() {
 
-        UserDTO currentUserDTO = userService.findByUserName("harold@manager.com");
+        UserDTO currentUserDTO = userService.findByUserName("mike@gmail.com");
         User user = userMapper.convertToEntity(currentUserDTO);
 
         //List<Project> list = projectRepository.findAll();

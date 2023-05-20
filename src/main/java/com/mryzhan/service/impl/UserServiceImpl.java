@@ -3,7 +3,6 @@ package com.mryzhan.service.impl;
 import com.mryzhan.dto.ProjectDTO;
 import com.mryzhan.dto.TaskDTO;
 import com.mryzhan.dto.UserDTO;
-import com.mryzhan.entity.Task;
 import com.mryzhan.entity.User;
 import com.mryzhan.mapper.UserMapper;
 import com.mryzhan.repository.UserRepository;
@@ -12,6 +11,7 @@ import com.mryzhan.service.TaskService;
 import com.mryzhan.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +24,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ProjectService projectService;
     private final TaskService taskService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, @Lazy ProjectService projectService, TaskService taskService) {
+    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, @Lazy ProjectService projectService, TaskService taskService, PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.projectService = projectService;
         this.taskService = taskService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -46,7 +48,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDTO userDTO) {
-        userRepository.save(userMapper.convertToEntity(userDTO));
+        userDTO.setEnabled(true);
+        User obj = userMapper.convertToEntity(userDTO);
+        obj.setPassWord(passwordEncoder.encode(obj.getPassWord()));
+
+        userRepository.save(obj);
     }
 
     @Override
