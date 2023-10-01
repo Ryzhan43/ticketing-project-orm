@@ -25,7 +25,6 @@ public class UserController {
     @GetMapping("/create")
     public String createUser(Model model) {
 
-        userService.findAllManagers().forEach(System.out::println);
         model.addAttribute("user", new UserDTO());
         model.addAttribute("roles", roleService.findALlRoles());
         model.addAttribute("users", userService.findAllUsers());
@@ -76,7 +75,6 @@ public class UserController {
 
         userService.update(user);
         return "redirect:/user/create";
-
     }
 
     @GetMapping("/delete/{username}")
